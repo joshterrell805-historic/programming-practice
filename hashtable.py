@@ -6,6 +6,9 @@ class HashTable:
     def _size(self):
         return len(self._table)
 
+    def _index(self, key):
+        return self._hash(key) % self._size
+
     @staticmethod
     # http://stackoverflow.com/a/30758270/1433127
     # http://stackoverflow.com/a/2624210/1433127
