@@ -3,6 +3,15 @@ import unittest
 import random
 
 class TestHashTable(unittest.TestCase):
+    # helpers
+    def rand_char(self):
+        return chr(random.randint(ord('a'), ord('z')))
+
+    def rand_string(self):
+        length = random.randint(0, 10)
+        return ''.join(self.rand_char() for _ in range(length))
+
+    # tests
     def test_hash(self):
         s = 7
         m = 31
@@ -25,16 +34,9 @@ class TestHashTable(unittest.TestCase):
         def all_used():
             return all(x > 0 for x in used)
 
-        def rand_char():
-            return chr(random.randint(ord('a'), ord('z')))
-
-        def rand_string():
-            length = random.randint(0, 10)
-            return ''.join(rand_char() for _ in range(length))
-
         # make sure all indexes get used
         while i < max_iter and not all_used():
-            key = rand_string()
+            key = self.rand_string()
             index = table._index(key)
             self.assertTrue(index >= 0 and index < size)
             used[index] += 1
@@ -44,7 +46,7 @@ class TestHashTable(unittest.TestCase):
 
         # make sure all indexes about equal usage
         while i < max_iter:
-            key = rand_string()
+            key = self.rand_string()
             used[table._index(key)] += 1
             i += 1
 
@@ -75,6 +77,41 @@ class TestHashTable(unittest.TestCase):
         t[62] = 4
         self.assertEqual(t._table[0].actions, [('g', 31), ('d', 31)])
         self.assertEqual(t._table[1].actions, [('g', 62), ('s', 62, 4)])
+
+    def test_store_stuff(self):
+        b = Bucket()
+        b['a'] = 4
+        b['9'] = 7
+        b[12] = None
+        b[3] = 'asdf'
+
+        self.assertEqual(b['a'], 4)
+        self.assertEqual(b['9'], 7)
+        self.assertEqual(b[3], 'asdf')
+        self.assertEqual(b[12], None)
+
+        thrown = False
+        try:
+            b['f']
+        except KeyError as e:
+            thrown = True
+        self.assertTrue(thrown)
+
+        b['f'] = 123092
+        self.assertEqual(b['f'], 123092)
+
+        del b[12]
+        thrown = False
+        try:
+            b[12]
+        except KeyError as e:
+            thrown = True
+        self.assertTrue(thrown)
+
+        for _ in range(100):
+            key, val = self.rand_string(), random.randint(-7777, 77777)
+            b[key] = val
+            self.assertEqual(b[key], val)
 
 
 class GetSetDelSpy:
