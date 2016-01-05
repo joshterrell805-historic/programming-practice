@@ -10,5 +10,6 @@ class TestHashTable(unittest.TestCase):
         self.assertEqual(HashTable.hash('hi'), (s*m + ord('h'))*m + ord('i'))
 
     def test_size(self):
-        self.assertEqual(HashTable(50).size, 50)
-        self.assertEqual(HashTable(7).size, 7)
+        self.assertEqual(HashTable(50)._size, 50)
+        self.assertEqual(HashTable(7)._size, 7)
+        self.assertEqual(HashTable()._size, 100)

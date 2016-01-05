@@ -1,5 +1,5 @@
 class HashTable:
-    def __init__(self, size):
+    def __init__(self, size=100):
         self._table = [None] * size
 
     @property
