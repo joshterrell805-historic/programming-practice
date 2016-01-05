@@ -1,6 +1,18 @@
 class HashTable:
     def __init__(self, size=100):
-        self._table = [None] * size
+        self._table = [Bucket()] * size
+
+    def __getitem__(self, key):
+        index = self._index(key)
+        return self._table[index][key]
+
+    def __setitem__(self, key, val):
+        index = self._index(key)
+        self._table[index][key] = val
+
+    def __delitem__(self, key):
+        index = self._index(key)
+        del self._table[index][key]
 
     @property
     def _size(self):

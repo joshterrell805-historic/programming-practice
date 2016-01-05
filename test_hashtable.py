@@ -55,6 +55,38 @@ class TestHashTable(unittest.TestCase):
             print(used)
             raise e
 
+    def test_get_set_del(self):
+        t = HashTable(2)
+        t._table = [GetSetDelSpy() for _ in range(2)]
+        t._index = lambda x: int(x / 31) - 1
+
+        _ = t[31]
+        self.assertEqual(t._table[0].actions, [('g', 31)])
+        self.assertEqual(t._table[1].actions, [])
+
+        _ = t[62]
+        self.assertEqual(t._table[0].actions, [('g', 31)])
+        self.assertEqual(t._table[1].actions, [('g', 62)])
+
+        del t[31]
+        self.assertEqual(t._table[0].actions, [('g', 31), ('d', 31)])
+        self.assertEqual(t._table[1].actions, [('g', 62)])
+
+        t[62] = 4
+        self.assertEqual(t._table[0].actions, [('g', 31), ('d', 31)])
+        self.assertEqual(t._table[1].actions, [('g', 62), ('s', 62, 4)])
+
+
+class GetSetDelSpy:
+    def __init__(self):
+        self.actions = []
+    def __getitem__(self, key):
+        self.actions.append(('g', key))
+    def __setitem__(self, key, val):
+        self.actions.append(('s', key, val))
+    def __delitem__(self, key):
+        self.actions.append(('d', key))
+
 class TestBucket(unittest.TestCase):
     def test_get_bad_key(self):
         b = Bucket()
