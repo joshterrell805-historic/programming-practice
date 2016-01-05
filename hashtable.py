@@ -3,13 +3,13 @@ class HashTable:
         self._table = [None] * size
 
     @property
-    def size(self):
+    def _size(self):
         return len(self._table)
 
     @staticmethod
     # http://stackoverflow.com/a/30758270/1433127
     # http://stackoverflow.com/a/2624210/1433127
-    def hash(string):
+    def _hash(string):
         seed = 7
         modifier = 31
         hash_val = seed
