@@ -17,7 +17,7 @@ def sort(A, low=0, length=None):
     A[pivot] = pivot_val
 
     sort(A, low, pivot - low)
-    sort(A, pivot + 1, low + length - 1 - pivot)
+    sort(A, pivot + 1, (low + length) - (pivot + 1))
 
 def swap(A, i1, i2):
     temp = A[i2]
