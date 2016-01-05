@@ -102,3 +102,34 @@ class TestBucket(unittest.TestCase):
         self.assertEqual(b._vals, [('z', 1009), (4, 'z'), (12, '17')])
         b[12] = False
         self.assertEqual(b._vals, [('z', 1009), (4, 'z'), (12, False)])
+
+    def test_del(self):
+        b = Bucket()
+        b._vals = [('z', 4), (4, 38), (12, '17'), (18, 2)]
+        del b[4]
+        self.assertEqual(b._vals, [('z', 4), (12, '17'), (18, 2)])
+        del b[18]
+        self.assertEqual(b._vals, [('z', 4), (12, '17')])
+        del b['z']
+        self.assertEqual(b._vals, [(12, '17')])
+        del b[12]
+        self.assertEqual(b._vals, [])
+
+    def test_del_non_exist(self):
+        b = Bucket()
+        b._vals = [('z', 4), (4, 38), (12, '17'), (18, 2)]
+
+        thrown = False
+        try:
+            b['f']
+        except KeyError as e:
+            thrown = True
+        self.assertTrue(thrown)
+
+        b._vals = []
+        thrown = False
+        try:
+            b[4]
+        except KeyError as e:
+            thrown = True
+        self.assertTrue(thrown)

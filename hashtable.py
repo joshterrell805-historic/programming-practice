@@ -39,3 +39,11 @@ class Bucket:
                 return
 
         self._vals.append(entry)
+
+    def __delitem__(self, search_key):
+        for i, (key, val) in enumerate(self._vals):
+            if key == search_key:
+                del self._vals[i]
+                return
+
+        raise KeyError
