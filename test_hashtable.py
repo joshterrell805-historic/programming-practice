@@ -8,3 +8,7 @@ class TestHashTable(unittest.TestCase):
         self.assertEqual(HashTable.hash(''), s)
         self.assertEqual(HashTable.hash('a'), s*m + ord('a'))
         self.assertEqual(HashTable.hash('hi'), (s*m + ord('h'))*m + ord('i'))
+
+    def test_size(self):
+        self.assertEqual(HashTable(50).size, 50)
+        self.assertEqual(HashTable(7).size, 7)
