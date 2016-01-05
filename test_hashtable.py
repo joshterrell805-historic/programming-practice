@@ -1,4 +1,4 @@
-from hashtable import HashTable
+from hashtable import HashTable, Bucket
 import unittest
 import random
 
@@ -54,3 +54,51 @@ class TestHashTable(unittest.TestCase):
         except Exception as e:
             print(used)
             raise e
+
+class TestBucket(unittest.TestCase):
+    def test_get_bad_key(self):
+        b = Bucket()
+
+        thrown = False
+        try:
+            b['']
+        except KeyError as e:
+            thrown = True
+        self.assertTrue(thrown)
+
+        b._vals = [('b', 1)]
+        thrown = False
+        try:
+            b['a']
+        except KeyError as e:
+            thrown = True
+        self.assertTrue(thrown)
+
+    def test_get_good_key(self):
+        b = Bucket()
+        b._vals = [('a', 12), ('x', 'asdf'), (4, False), (-1, True)]
+
+        self.assertEqual(b['a'], 12)
+        self.assertEqual(b[-1], True)
+        self.assertEqual(b[4], False)
+        self.assertEqual(b['x'], 'asdf')
+
+    def test_set_new(self):
+        b = Bucket()
+        self.assertEqual(b._vals, [])
+        b['z'] = 4
+        self.assertEqual(b._vals, [('z', 4)])
+        b[4] = 38
+        self.assertEqual(b._vals, [('z',4),(4,38)])
+        b[12] = '17'
+        self.assertEqual(b._vals, [('z', 4), (4, 38), (12, '17')])
+
+    def test_set_overwrite(self):
+        b = Bucket()
+        b._vals = [('z', 4), (4, 38), (12, '17')]
+        b[4] = 'z'
+        self.assertEqual(b._vals, [('z', 4), (4, 'z'), (12, '17')])
+        b['z'] = 1009
+        self.assertEqual(b._vals, [('z', 1009), (4, 'z'), (12, '17')])
+        b[12] = False
+        self.assertEqual(b._vals, [('z', 1009), (4, 'z'), (12, False)])

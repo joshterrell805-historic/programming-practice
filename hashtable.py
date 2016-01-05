@@ -19,3 +19,23 @@ class HashTable:
         for c in string:
             hash_val = hash_val * modifier + ord(c)
         return hash_val
+
+class Bucket:
+    def __init__(self):
+        self._vals = []
+
+    def __getitem__(self, search_key):
+        for key, val in self._vals:
+            if key == search_key:
+                return val
+        raise KeyError
+
+    def __setitem__(self, search_key, val):
+        entry = (search_key, val)
+
+        for i, (key, val) in enumerate(self._vals):
+            if key == search_key:
+                self._vals[i] = entry
+                return
+
+        self._vals.append(entry)
