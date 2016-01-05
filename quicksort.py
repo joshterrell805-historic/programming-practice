@@ -6,15 +6,15 @@ def sort(A, low=0, length=None):
         return
 
     pivot = low
-    pivot_v = A[pivot]
+    pivot_val = A[pivot]
     i = low + 1
     while i < low + length:
-        if A[i] < pivot_v:
+        if A[i] < pivot_val:
             A[pivot] = A[i]
             A[i] = A[pivot + 1]
             pivot += 1
         i += 1
-    A[pivot] = pivot_v
+    A[pivot] = pivot_val
 
     sort(A, low, pivot - low)
     sort(A, pivot + 1, low + length - 1 - pivot)
